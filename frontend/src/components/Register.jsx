@@ -5,7 +5,6 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import IconButton from "@mui/material/IconButton";
 
-
 const Register = () => {
   const [showPassword, setShowPassword] = useState("false");
 
