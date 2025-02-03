@@ -1,1 +1,64 @@
-/.vscode
+# Global ignores
+.DS_Store
+*.log
+*.out
+*.suo
+*.sw?
+*.swp
+*.swo
+
+# VS Code settings (keeping extensions.json)
+.vscode/*
+!.vscode/extensions.json
+
+# IntelliJ/WebStorm/PyCharm project files
+.idea/
+
+# System files
+Thumbs.db
+
+# ===========================
+# Frontend
+# ===========================
+
+# Logs
+frontend/logs/
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# Dependencies & Build Files
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# ===========================
+# Backend
+# ===========================
+
+# Database
+backend/db.sqlite3
+
+# Compiled Python files
+backend/*.pyc
+backend/*.pyo
+backend/__pycache__/
+
+# Environment variables and sensitive files
+backend/.env
+backend/*.env
+
+# Virtual Environment folders
+backend/venv/
+backend/env/
+
+# Django migration cache files
+backend/**/migrations/__pycache__/
+
+# Logs
+backend/logs/
+backend/*.log
