@@ -1,10 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TextField, Button, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import IconButton from "@mui/material/IconButton";
-import { use } from "react";
+
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState("false");
