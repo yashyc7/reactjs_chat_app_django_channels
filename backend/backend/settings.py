@@ -55,6 +55,13 @@ ROOT_URLCONF = 'backend.urls'
 
 AUTH_USER_MODEL='accounts.User'
 
+
+REST_FRAMEWORK={
+'DEFAULT_AUTHENTICATION_CLASSESS':[
+    'accounts.tokenauthentication.JWTAuthentication'
+]
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
