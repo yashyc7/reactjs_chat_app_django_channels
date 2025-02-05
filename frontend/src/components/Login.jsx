@@ -7,13 +7,12 @@ import IconButton from "@mui/material/IconButton";
 import Alert from "@mui/material/Alert";
 
 
-const Register = () => {
+
+const Login = () => {
   const BASE_URL = "http://127.0.0.1:8000/";
   const [showPassword, setShowPassword] = useState("false");
   const [formdata, setformdata] = useState({
     email: "",
-    first_name: "",
-    last_name: "",
     password: "",
   });
 
@@ -24,39 +23,42 @@ const Register = () => {
     setShowPassword((prev) => !prev);
   };
 
-const handleFormSubmit = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}register/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formdata),
-    });
-
-    const data = await response.json();
-
-    if (response.status === 201) {
-      setMessage(data.message || "User has registered successfully");
-      setSeverity("success");
-    } else if (response.status === 400) {
-      setMessage("User with the same email is already registered");
-      setSeverity("warning");
-    } else {
-      setMessage("An unexpected error occurred");
+  const handleFormSubmit = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formdata),
+      });
+  
+      const data = await response.json();
+  
+      if (response.status === 200) {
+        setMessage(data.message || "Login successful");
+        setSeverity("success");
+        // Store token if needed
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+      } else if (response.status === 400) {
+        setMessage("Wrong email or password");
+        setSeverity("warning");
+      } else {
+        setMessage("An unexpected error occurred");
+        setSeverity("error");
+      }
+    } catch (error) {
+      setMessage("Something went wrong");
       setSeverity("error");
+      console.error("Error:", error);
     }
-  } catch (error) {
-    setMessage("Something went wrong");
-    setSeverity("error");
-    console.error("Error:", error);
-  }
-};
-
+  };
   
   return (
     <>
-      <div className="container text-center djustify-content-center align-items-center mt-5  ">
+      <div className="container text-center d-block justify-content-center align-items-center mt-5">
         <div className="heading text-center">
           {message && <Alert severity={severity}>{message}</Alert>}
           <Typography
@@ -64,7 +66,7 @@ const handleFormSubmit = async () => {
             component="h2"
             style={{ fontFamily: "Ubuntu Mono" }}
           >
-            Register Yourself
+            Login
           </Typography>
         </div>
 
@@ -81,31 +83,7 @@ const handleFormSubmit = async () => {
           />
         </div>
 
-        <div className="first name container mt-3">
-          <TextField
-            id="first_name"
-            label="First Name"
-            variant="outlined"
-            type="text"
-            sx={{ width: "300px" }}
-            onChange={(e) =>
-              setformdata({ ...formdata, first_name: e.target.value })
-            }
-          />
-        </div>
-
-        <div className="last name container mt-3">
-          <TextField
-            id="last_name"
-            label="Last Name"
-            variant="outlined"
-            type="text"
-            sx={{ width: "300px" }}
-            onChange={(e) =>
-              setformdata({ ...formdata, last_name: e.target.value })
-            }
-          />
-        </div>
+      
 
         <div className="password container mt-3">
           <TextField
@@ -135,7 +113,7 @@ const handleFormSubmit = async () => {
 
         <div className="submit button mt-3">
           <Button variant="contained" type="submit" onClick={handleFormSubmit}>
-            Register
+            Login
           </Button>
         </div>
       </div>
@@ -143,4 +121,4 @@ const handleFormSubmit = async () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -8,13 +8,12 @@ from accounts.tokenauthentication import JWTAuthentication
 # Create your views here.
 @csrf_exempt
 @api_view(['POST'])
-def register_user(response):
-    serializer=UserSerializer(data=response.data)
+def register_user(request):
+    serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data,status=status.HTTP_201_CREATED)
-    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+        return Response({"message": "User has been registered successfully."}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def login(request):
