@@ -5,10 +5,11 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import IconButton from "@mui/material/IconButton";
 import Alert from "@mui/material/Alert";
-
-
+import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 const Login = () => {
+  const navigate = useNavigate();
   const BASE_URL = "http://127.0.0.1:8000/";
   const [showPassword, setShowPassword] = useState("false");
   const [formdata, setformdata] = useState({
@@ -32,9 +33,9 @@ const Login = () => {
         },
         body: JSON.stringify(formdata),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.status === 200) {
         setMessage(data.message || "Login successful");
         setSeverity("success");
@@ -42,12 +43,22 @@ const Login = () => {
         if (data.token) {
           localStorage.setItem("token", data.token);
         }
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       } else if (response.status === 400) {
         setMessage("Wrong email or password");
         setSeverity("warning");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       } else {
         setMessage("An unexpected error occurred");
         setSeverity("error");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       }
     } catch (error) {
       setMessage("Something went wrong");
@@ -55,9 +66,9 @@ const Login = () => {
       console.error("Error:", error);
     }
   };
-  
+
   return (
-    <>
+    <><Header/>
       <div className="container text-center d-block justify-content-center align-items-center mt-5">
         <div className="heading text-center">
           {message && <Alert severity={severity}>{message}</Alert>}
@@ -82,8 +93,6 @@ const Login = () => {
             }
           />
         </div>
-
-      
 
         <div className="password container mt-3">
           <TextField
@@ -115,6 +124,16 @@ const Login = () => {
           <Button variant="contained" type="submit" onClick={handleFormSubmit}>
             Login
           </Button>
+          <hr />
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/register");
+            }}
+          >
+            Don't have account? register{" "}
+          </a>
         </div>
       </div>
     </>

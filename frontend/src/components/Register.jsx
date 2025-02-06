@@ -5,9 +5,11 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import IconButton from "@mui/material/IconButton";
 import Alert from "@mui/material/Alert";
-
+import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 const Register = () => {
+  const navigate = useNavigate();
   const BASE_URL = "http://127.0.0.1:8000/";
   const [showPassword, setShowPassword] = useState("false");
   const [formdata, setformdata] = useState({
@@ -24,38 +26,41 @@ const Register = () => {
     setShowPassword((prev) => !prev);
   };
 
-const handleFormSubmit = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}register/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formdata),
-    });
+  const handleFormSubmit = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formdata),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.status === 201) {
-      setMessage(data.message || "User has registered successfully");
-      setSeverity("success");
-    } else if (response.status === 400) {
-      setMessage("User with the same email is already registered");
-      setSeverity("warning");
-    } else {
-      setMessage("An unexpected error occurred");
+      if (response.status === 201) {
+        setMessage(data.message || "User has registered successfully");
+        setSeverity("success");
+        // Navigate to login page after 2 seconds
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      } else if (response.status === 400) {
+        setMessage("User with the same email is already registered");
+        setSeverity("warning");
+      } else {
+        setMessage("An unexpected error occurred");
+        setSeverity("error");
+      }
+    } catch (error) {
+      setMessage("Something went wrong");
       setSeverity("error");
+      console.error("Error:", error);
     }
-  } catch (error) {
-    setMessage("Something went wrong");
-    setSeverity("error");
-    console.error("Error:", error);
-  }
-};
+  };
 
-  
   return (
-    <>
+    <> <Header />
       <div className="container text-center djustify-content-center align-items-center mt-5  ">
         <div className="heading text-center">
           {message && <Alert severity={severity}>{message}</Alert>}
@@ -137,6 +142,16 @@ const handleFormSubmit = async () => {
           <Button variant="contained" type="submit" onClick={handleFormSubmit}>
             Register
           </Button>
+          <hr />
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+          >
+            Already have account? Login{" "}
+          </a>
         </div>
       </div>
     </>
