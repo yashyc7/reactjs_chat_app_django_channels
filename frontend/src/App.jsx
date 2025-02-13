@@ -1,6 +1,11 @@
 import "./App.css";
 import Register from "./components/Register";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
@@ -25,7 +30,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-           <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </AuthProvider>

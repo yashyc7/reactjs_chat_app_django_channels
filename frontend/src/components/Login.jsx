@@ -1,5 +1,5 @@
 import React from "react";
-import { useState,useCallback,useRef } from "react";
+import { useState, useCallback, useRef } from "react";
 import { TextField, Button, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
@@ -20,7 +20,7 @@ const Login = () => {
   });
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-  const debounceRef=useRef(null);
+  const debounceRef = useRef(null);
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
@@ -75,9 +75,9 @@ const Login = () => {
     }, 500); // Debounce time of 500ms
   }, [formdata, navigate, setIsAuthenticated]);
 
-
   return (
-    <><Header/>
+    <>
+      <Header />
       <div className="container text-center d-block justify-content-center align-items-center mt-5">
         <div className="heading text-center">
           {message && <Alert severity={severity}>{message}</Alert>}

@@ -10,7 +10,7 @@ const ChatArea = () => {
         <Message text="Hello" sent />
         <Message text="Hello , how are you ? " />
       </div>
-      <MessageInput/>
+      <MessageInput />
     </div>
   );
 };
