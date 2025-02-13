@@ -21,5 +21,5 @@ from accounts.views import register_user,login
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/',register_user,name='register'),
-    path('login/',login,name='register')
+    path('login/',login,name='login')
 ]

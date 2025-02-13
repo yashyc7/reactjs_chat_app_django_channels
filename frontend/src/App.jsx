@@ -1,26 +1,34 @@
 import "./App.css";
 import Register from "./components/Register";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
-import ChatArea from "./components/ChatArea";
-import Sidebar from "./components/Sidebar"
+import { AuthProvider, useAuth } from "./utils/AuthContext";
+
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? children : <Navigate to="/" />;
+};
+
 function App() {
   return (
-    <>
-    <div className="chat-container">
-      <Sidebar/>
-      <ChatArea/>
-    </div>
-    </>
-    // <Router>
-    //   <Routes>
-    //     <Route path="/register" element={<Register />} />
-    //     <Route path="/" element={<Login />} />
-    //     <Route path="/dashboard" element={<Dashboard />} />
-    //     //Add other routes as needed
-    //   </Routes>
-    // </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Login />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+           <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

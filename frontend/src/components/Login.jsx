@@ -7,11 +7,13 @@ import IconButton from "@mui/material/IconButton";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
+import { useAuth } from "../utils/AuthContext";
 
 const Login = () => {
+  const { setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
   const BASE_URL = "http://127.0.0.1:8000/";
-  const [showPassword, setShowPassword] = useState("false");
+  const [showPassword, setShowPassword] = useState(false);
   const [formdata, setformdata] = useState({
     email: "",
     password: "",
@@ -44,7 +46,9 @@ const Login = () => {
           localStorage.setItem("token", data.token);
         }
         setTimeout(() => {
+          
           navigate("/dashboard");
+          setIsAuthenticated(true);
         }, 1000);
       } else if (response.status === 400) {
         setMessage("Wrong email or password");
