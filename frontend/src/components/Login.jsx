@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useCallback,useRef } from "react";
 import { TextField, Button, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
@@ -18,58 +18,63 @@ const Login = () => {
     email: "",
     password: "",
   });
-
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
-
+  const debounceRef=useRef(null);
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const handleFormSubmit = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}login/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formdata),
-      });
+  const handleFormSubmit = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-      const data = await response.json();
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(`${BASE_URL}login/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formdata),
+        });
 
-      if (response.status === 200) {
-        setMessage(data.message || "Login successful");
-        setSeverity("success");
-        // Store token if needed
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        const data = await response.json();
+
+        if (response.status === 200) {
+          setMessage(data.message || "Login successful");
+          setSeverity("success");
+
+          if (data.token) {
+            localStorage.setItem("token", data.token);
+          }
+
+          setTimeout(() => {
+            navigate("/dashboard");
+            setIsAuthenticated(true);
+          }, 1000);
+        } else if (response.status === 400) {
+          setMessage("Wrong email or password");
+          setSeverity("warning");
+
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
+        } else {
+          setMessage("An unexpected error occurred");
+          setSeverity("error");
+
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
         }
-        setTimeout(() => {
-          
-          navigate("/dashboard");
-          setIsAuthenticated(true);
-        }, 1000);
-      } else if (response.status === 400) {
-        setMessage("Wrong email or password");
-        setSeverity("warning");
-
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      } else {
-        setMessage("An unexpected error occurred");
+      } catch (error) {
+        setMessage("Something went wrong");
         setSeverity("error");
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        console.error("Error:", error);
       }
-    } catch (error) {
-      setMessage("Something went wrong");
-      setSeverity("error");
-      console.error("Error:", error);
-    }
-  };
+    }, 500); // Debounce time of 500ms
+  }, [formdata, navigate, setIsAuthenticated]);
+
 
   return (
     <><Header/>

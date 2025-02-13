@@ -9,20 +9,6 @@ const Dashboard = () => {
   const {setIsAuthenticated}=useAuth();
   return (
     <>
-      <Header />
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          setTimeout(() => {
-            localStorage.removeItem("token");
-            setIsAuthenticated(false);
-            navigate("");
-          }, 1000);
-        }}
-      >
-        Logout
-      </a>
       <div className="chat-container">
         <Sidebar />
         <ChatArea />

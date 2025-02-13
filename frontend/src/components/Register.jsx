@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { TextField, Button, InputAdornment, Typography } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
@@ -18,7 +18,7 @@ const Register = () => {
     last_name: "",
     password: "",
   });
-
+  const debounceRef = useRef(null);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
@@ -26,41 +26,44 @@ const Register = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const handleFormSubmit = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}register/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formdata),
-      });
+  const handleFormSubmit = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-      const data = await response.json();
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(`${BASE_URL}register/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formdata),
+        });
 
-      if (response.status === 201) {
-        setMessage(data.message || "User has registered successfully");
-        setSeverity("success");
-        // Navigate to login page after 2 seconds
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
-      } else if (response.status === 400) {
-        setMessage("User with the same email is already registered");
-        setSeverity("warning");
-      } else {
-        setMessage("An unexpected error occurred");
+        const data = await response.json();
+
+        if (response.status === 201) {
+          setMessage(data.message || "User registered successfully");
+          setSeverity("success");
+
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        } else if (response.status === 400) {
+          setMessage("User with the same email is already registered");
+          setSeverity("warning");
+        } else {
+          setMessage("An unexpected error occurred");
+          setSeverity("error");
+        }
+      } catch (error) {
+        setMessage("Something went wrong");
         setSeverity("error");
+        console.error("Error:", error);
       }
-    } catch (error) {
-      setMessage("Something went wrong");
-      setSeverity("error");
-      console.error("Error:", error);
-    }
-  };
-
+    }, 500); // Debounce time of 500ms
+  }, [formdata, navigate]);
   return (
-    <> <Header />
+    <>
+      {" "}
+      <Header />
       <div className="container text-center djustify-content-center align-items-center mt-5  ">
         <div className="heading text-center">
           {message && <Alert severity={severity}>{message}</Alert>}
