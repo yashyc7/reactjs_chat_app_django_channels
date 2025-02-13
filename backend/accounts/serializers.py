@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model,authenticate
+from django.contrib.auth import get_user_model, authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -7,10 +7,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = get_user_model().objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data.get('first_name', ""),
-            last_name=validated_data.get('last_name', ""),
+            email=validated_data["email"],
+            password=validated_data["password"],
+            first_name=validated_data.get("first_name", ""),
+            last_name=validated_data.get("last_name", ""),
         )
         return user
 
@@ -21,29 +21,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email=serializers.EmailField()
-    id=serializers.CharField(max_length=15,read_only=True)
-    password=serializers.CharField(max_length=255,write_only=True)
+    email = serializers.EmailField()
+    id = serializers.CharField(max_length=15, read_only=True)
+    password = serializers.CharField(max_length=255, write_only=True)
 
-    def validate(self,data):
-        email=data.get('email',None)
-        password=data.get('password',None)
+    def validate(self, data):
+        email = data.get("email", None)
+        password = data.get("password", None)
 
         if email is None:
             raise serializers.ValidationError("An email address is required for login")
         if password is None:
             raise serializers.ValidationError("An password is required for login")
-        user=authenticate(username=email,password=password)
+        user = authenticate(username=email, password=password)
 
         if user is None:
-            raise serializers.ValidationError('Invalid email or password')
+            raise serializers.ValidationError("Invalid email or password")
         if not user.is_active:
-            raise serializers.ValidationError(
-                "user is Inactive"
-            )
+            raise serializers.ValidationError("user is Inactive")
         return {
-            "email":user.email,
-            "id":user.id,
+            "email": user.email,
+            "id": user.id,
         }
-
-
