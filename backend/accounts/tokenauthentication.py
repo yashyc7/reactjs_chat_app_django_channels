@@ -12,7 +12,7 @@ User = get_user_model()
 class JWTAuthentication(BaseAuthentication):
 
     @staticmethod
-    def genreate_token(payload):
+    def generate_token(payload):
         expiration = datetime.utcnow() + timedelta(hours=24)
         payload["exp"] = expiration
         token = jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm="HS256")
@@ -43,6 +43,6 @@ class JWTAuthentication(BaseAuthentication):
 
             user_id = payload["id"]
             user = User.objects.get(id=user_id)
-            return user
+            return (user, None)
         except (InvalidTokenError, ExpiredSignatureError, User.DoesNotExist):
             raise AuthenticationFailed("Invalid Token ")

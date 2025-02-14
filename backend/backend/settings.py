@@ -60,9 +60,7 @@ AUTH_USER_MODEL = "accounts.User"
 
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSESS": [
-        "accounts.tokenauthentication.JWTAuthentication"
-    ]
+    "DEFAULT_AUTHENTICATION_CLASSES": ["accounts.tokenauthentication.JWTAuthentication"]
 }
 
 TEMPLATES = [

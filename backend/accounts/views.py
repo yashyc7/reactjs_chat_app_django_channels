@@ -25,7 +25,7 @@ def register_user(request):
 def login(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
-        token = JWTAuthentication.genreate_token(payload=serializer.data)
+        token = JWTAuthentication.generate_token(payload=serializer.data)
         return Response(
             {"message": "Login is successful", "token": token, "user": serializer.data},
             status=status.HTTP_200_OK,

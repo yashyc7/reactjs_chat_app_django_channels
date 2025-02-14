@@ -7,7 +7,8 @@ const Dashboard = () => {
       <div className="chat-container">
         <Sidebar />
         <ChatArea />
-      </div>``
+      </div>
+      ``
     </>
   );
 };
