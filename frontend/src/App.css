@@ -2,13 +2,16 @@ body {
   font-family: "Ubuntu Mono";
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #f7f9fc;
+  overflow: hidden;
 }
 
 .sidebar {
+  width: auto;
+  max-width: 400px;
   flex: 1;
-  background-color: #3498db;
-  color: #fff;
+  background-color: #1e272e;
+  color: #d2dae2;
   padding: 20px;
   overflow-y: auto;
 }
@@ -17,12 +20,13 @@ body {
   flex: 3;
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 
 .chat-header {
-  background-color: #3498db;
-  color: #ffffff;
-  padding: 15px;
+  background-color: #1976d2;
+  color: #d2dae2;
+  padding: 30px;
   text-align: center;
 }
 
@@ -30,7 +34,7 @@ body {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  background-color: #ffffff;
+  background-color: #f7f9fc;
 }
 
 .message {
@@ -50,18 +54,18 @@ body {
 .message-bubble {
   max-width: 70%;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 .sent .message-bubble {
-  background-color: #3498db;
+  background-color: #1976d2; /* Use the same color as the header */
   color: #ffffff;
   border-bottom-right-radius: 0;
 }
 
 .received .message-bubble {
-  background-color: #bab6b6;
-  color: #000000;
+  background-color: #dcdde1;
+  color: #2f3640;
   border-bottom-left-radius: 0;
 }
 
@@ -86,14 +90,16 @@ body {
   padding: 10px;
   resize: none;
   outline: none;
+  background-color: #f7f9fc;
+  color: #4475b8;
 }
 
 .message-input button {
-  background-color: #3498db;
+  background-color: #1976d2; /* Use the same color as the header */
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   color: #ffffff;
   padding: 10px 20px;
-  margin-top: 10px;
+  margin-left: 10px;
   cursor: pointer;
 }

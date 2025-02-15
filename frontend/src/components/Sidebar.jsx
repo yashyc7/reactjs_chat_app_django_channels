@@ -13,6 +13,7 @@ import {
   Divider,
 } from "@mui/material";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import MarkChatReadIcon from "@mui/icons-material/MarkChatRead";
 
 const Sidebar = () => {
   const BASE_URL = "http://127.0.0.1:8000/";
@@ -48,10 +49,18 @@ const Sidebar = () => {
           marginBottom: "20px",
         }}
       >
-        <Typography variant="h6">Chats</Typography>
+        <Typography variant="h6">
+          <MarkChatReadIcon /> Chatterbox
+        </Typography>
         <Button
           variant="contained"
-          color="secondary"
+          sx={{
+            backgroundColor: "#1976d2",
+            "&:hover": { backgroundColor: "#e64a19" },
+            textTransform: "none",
+            borderRadius: "20px",
+            fontFamily: "Ubuntu Mono",
+          }}
           onClick={(e) => {
             e.preventDefault();
             setTimeout(() => {
@@ -61,7 +70,7 @@ const Sidebar = () => {
             }, 1000);
           }}
         >
-          Logout
+          LogOut
         </Button>
       </div>
       <Divider />
@@ -82,8 +91,12 @@ const Sidebar = () => {
                   primary={`${user.first_name} ${user.last_name}`}
                   secondary={user.email}
                   sx={{
+                    "& .MuiListItemText-primary": {
+                      fontFamily: "Ubuntu Mono", // Apply font family here
+                    },
                     "& .MuiListItemText-secondary": {
                       color: "#ffffff", // Adjust the color as needed
+                      fontFamily: "Ubuntu Mono", // Apply font family here
                     },
                   }}
                 />
